@@ -1,0 +1,3 @@
+# producao é o nome do grupo de máquinas, abaixo dela se eu quiser posso definir outro grupo de máquinas e assim acesso elas de uma vez só.
+[producao]
+77.42.85.245 ansible_user=root

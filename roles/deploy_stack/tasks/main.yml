@@ -1,0 +1,34 @@
+# Os três traços indicam início de um documento yaml
+---
+# name é o nome descritivo do passo que está a ser feito
+- name: Atualizar código do backend
+# git é o módulo do ansible que estamos usando, esse módulo faz o seguinte: Git clone, depois git pull e no final git checkout, nesse caso vai fazer checout e clone da branch develop
+  git:
+    # repo indica o repositório que vamos clonar. Se o repositório fosse privado, eventualmente aqui ia pedir para colocar a senha (Em forma de variável de ambiente)
+    repo: 'https://github.com/RigobertoCaionda/burrinho-backend.git'
+    # É a pasta do servidor onde esse código irá parar, se a pasta já existir, ele vai apenas clonar o projeto dentro dela
+    dest: /var/www/burrinho-backend
+    # Version é a branch que vamos usar para clonar e fazer checkout
+    version: develop
+    # Esse update yes é o comportamento padrão, coloquei apenas por clareza, ele quer dizer: Se a pasta /var/www/burrinho-backend já existe então apenas faça git pull e se não existir clone mesmo.
+    update: yes
+    # Força atualização (Aceita git pull) mesmo que hajam mudanças locais, ou seja, ainda que existirem commits a ser feito no servidor, ele aceita o pull sem dar erro
+    force: yes
+
+- name: Parar containers
+# Command representa o comando que vamos dar para fazer alguma coisa, no caso aqui é o docker compose down
+  command: docker compose down
+  # O args chdir quer dizer, antes de executar o comando acima, entre nessa pasta aqui: /var/www/burrinho-backend, isso porque o docker compose precisa do arquivo docker-compose.yaml
+  args:
+    chdir: /var/www/burrinho-backend
+
+- name: Rodar migrações do Adonis
+# Esse comando é como se estivessemos a fazer um docker run, aqui estamos criando e rodando um container temporário só para rodar migrações e depois o container é destruído, pois para rodar migração o container precisa já estar rodando e nesse passo o container ainda não está rodando.
+  command: docker compose run --rm burrinho-backend-app node ace migration:run
+  args:
+    chdir: /var/www/burrinho-backend
+
+- name: Subir containers novamente
+  command: docker compose up -d --build
+  args:
+    chdir: /var/www/burrinho-backend

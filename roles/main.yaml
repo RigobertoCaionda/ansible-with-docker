@@ -1,0 +1,7 @@
+# Esse arquivo foi manualmente criado
+- hosts: producao
+  # become: yes
+  roles:
+   # - install_nginx
+    # - install_docker
+    - deploy_stack

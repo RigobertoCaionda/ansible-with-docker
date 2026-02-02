@@ -1,0 +1,36 @@
+# Esses 3 tracinhos indicam que estou começando um ansible playbook apenas, é só um indicador
+---
+# Name é apenas o nome desse playbook
+- name: Deploy do Backend da VPS
+
+# - hosts indica apenas à quais ips esses comandos vão afetar, nesse caso vai afetar os ips do grupo producao
+  hosts: producao
+
+# remote_user indica qual usuário vamos usar, como no servidor usamos o usuário root, então aqui também deve ser o usuário root para não dar erro.
+  remote_user: root
+
+  # O comando become yes é usado quando o teu remote_user não é o root, imagine que o teu remote_user é rigoberto, esse comando diz executa todos os comandos como se fosses root (Executando comandos com sudo). No meu caso, como o user já é root, então não precisa
+  #become: yes
+
+  # tasks é o conjunto de comandos que ele vai rodar
+  tasks:
+    # Estou instalando o cowsay simplesmente para testar se funciona, não é necessário a instalação dele
+    - name: Install cowsay (leve e seguro)
+      apt:
+        # Aqui name se refere ao pacote que ele vai instalar
+        name: cowsay
+        # state indica se vai instalar ou desinstalar
+        state: absent
+        update_cache: yes   # garante que o apt atualize os pacotes antes de instalar
+
+    - name: Installing Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Init Nginx
+      service:
+        name: nginx
+        state: started
+        

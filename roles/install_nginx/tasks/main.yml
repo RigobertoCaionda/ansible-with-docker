@@ -1,0 +1,15 @@
+---
+  # Essa é uma role, ou seja, corresponde a um conjunto de instruções que serão executadas
+- name: Installing Nginx
+  apt:
+    # Aqui name se refere ao pacote que ele vai instalar
+    name: nginx
+     # state indica se vai instalar ou desinstalar
+    state: present
+    update_cache: yes  # garante que o apt atualize os pacotes antes de instalar
+
+- name: Init Nginx
+  service:
+    name: nginx
+    state: started
+        
