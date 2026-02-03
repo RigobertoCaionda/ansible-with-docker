@@ -1,0 +1,38 @@
+---
+# O Git pode bloquear operações (pull/clone) se o dono da pasta for diferente do usuário que está rodando o Git.
+# Aqui, o Ansible roda como root, mas a pasta /var/www/burrinho-frontend pertence a www-data.
+# Este comando marca a pasta como "safe" para o Git, dizendo que confiamos nela, mesmo com dono diferente.
+- name: Marcar pasta como safe para git
+  command: git config --global --add safe.directory /var/www/burrinho-frontend
+
+- name: Atualizar código do frontend
+  git:
+    repo: 'https://github.com/RigobertoCaionda/burrinho-game-angular-version.git'
+    dest: /var/www/burrinho-frontend
+    version: develop
+    update: yes
+    force: yes
+
+- name: Install Dependencies
+# Algumas vezes vai precisar do export nvm dir antes de executar o comando correto
+  shell: |
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    npm ci
+  args:
+    chdir: /var/www/burrinho-frontend
+
+- name: Gerar build de produção
+  shell: |
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    npm run build -- --configuration production
+  args:
+    chdir: /var/www/burrinho-frontend
+
+- name: Copiar build para pasta do nginx
+  # É um comando do linux para apagar a pasta dist anterior e coloca os novos arquivos da pasta dist
+  command: rsync -a --delete dist/ /var/www/html/
+  args:
+    chdir: /var/www/burrinho-frontend
+
