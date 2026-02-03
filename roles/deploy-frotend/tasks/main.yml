@@ -13,20 +13,27 @@
     update: yes
     force: yes
 
+    
+# Para instalar o nodejs no linux primeiro precisa disso
+- name: Add NodeSource repository
+  shell: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+
+# Esse passo só é necessário se não tivermos o node instalado globalmente
+# Depois do passo acima pode instalar. Estamos instalando o node aqui pq sem isso dá erro, já que o node estava instalado apenas no nvm, mas agora estamos instalando globalmente para podermos usar os comandos npm abaixo
+- name: Install Node.js
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+
 - name: Install Dependencies
 # Algumas vezes vai precisar do export nvm dir antes de executar o comando correto
-  shell: |
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    npm ci
+  shell: npm ci
   args:
     chdir: /var/www/burrinho-frontend
 
 - name: Gerar build de produção
-  shell: |
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    npm run build -- --configuration production
+  shell: npm run build -- --configuration production
   args:
     chdir: /var/www/burrinho-frontend
 

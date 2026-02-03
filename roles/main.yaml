@@ -4,5 +4,5 @@
   roles:
    # - install_nginx
     # - install_docker
-    - deploy_stack
+    #- deploy_stack
     - deploy-frotend
