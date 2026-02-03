@@ -7,3 +7,5 @@
 # Quando você roda algo e fica amarelo quer dizer que a tal coisa foi mudada, se fica verde não mudou e se fica vermelho deu erro.
 
 # O ansible galaxy é usado para separar o nosso playbook em roles, ou seja, em pequenos conjuntos de tarefas, para usar o ansible-galaxy, criamos uma pasta roles na raiz do projeto, entramos na pasta e dentro dela usamos o comando:  ansible-galaxy init deploy_backend onde deploy_backend é o nome da role que será criado dentro dessa pasta. Ao rodar esse comando, vai criar uma pasta chamada deploy_backend dentro da pasta roles e dentro da pasta roles terá um monte de arquivos e pastas.
+
+# Para rodar um playbook criado com ansible-galaxy, entramos na pasta roles com cd, entramos na pasta da roles que criamos e executamos: ansible-playbook -i ../hosts main.yaml

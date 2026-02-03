@@ -13,24 +13,24 @@
   #become: yes
 
   # tasks é o conjunto de comandos que ele vai rodar
-  tasks:
-    # Estou instalando o cowsay simplesmente para testar se funciona, não é necessário a instalação dele
-    - name: Install cowsay (leve e seguro)
-      apt:
-        # Aqui name se refere ao pacote que ele vai instalar
-        name: cowsay
-        # state indica se vai instalar ou desinstalar
-        state: absent
-        update_cache: yes   # garante que o apt atualize os pacotes antes de instalar
+  # tasks:
+  #   # Estou instalando o cowsay simplesmente para testar se funciona, não é necessário a instalação dele
+  #   - name: Install cowsay (leve e seguro)
+  #     apt:
+  #       # Aqui name se refere ao pacote que ele vai instalar
+  #       name: cowsay
+  #       # state indica se vai instalar ou desinstalar
+  #       state: absent
+  #       update_cache: yes   # garante que o apt atualize os pacotes antes de instalar
 
-    - name: Installing Nginx
-      apt:
-        name: nginx
-        state: present
-        update_cache: yes
+  #   - name: Installing Nginx
+  #     apt:
+  #       name: nginx
+  #       state: present
+  #       update_cache: yes
 
-    - name: Init Nginx
-      service:
-        name: nginx
-        state: started
+  #   - name: Init Nginx
+  #     service:
+  #       name: nginx
+  #       state: started
         
