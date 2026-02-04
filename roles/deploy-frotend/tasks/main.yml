@@ -7,8 +7,8 @@
 
 - name: Atualizar código do frontend
   git:
-    repo: 'https://github.com/RigobertoCaionda/burrinho-game-angular-version.git'
-    dest: /var/www/burrinho-frontend
+    repo: "{{ git_repo_url }}"
+    dest: "{{ deploy_path }}"
     version: develop
     update: yes
     force: yes
@@ -30,16 +30,16 @@
 # Algumas vezes vai precisar do export nvm dir antes de executar o comando correto
   shell: npm ci
   args:
-    chdir: /var/www/burrinho-frontend
+    chdir: "{{ deploy_path }}"
 
 - name: Gerar build de produção
   shell: npm run build -- --configuration production
   args:
-    chdir: /var/www/burrinho-frontend
+    chdir: "{{ deploy_path }}"
 
 - name: Copiar build para pasta do nginx
   # É um comando do linux para apagar a pasta dist anterior e coloca os novos arquivos da pasta dist
   command: rsync -a --delete dist/ /var/www/html/
   args:
-    chdir: /var/www/burrinho-frontend
+    chdir: "{{ deploy_path }}"
 

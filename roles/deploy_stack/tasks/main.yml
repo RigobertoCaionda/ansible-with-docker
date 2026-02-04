@@ -15,6 +15,18 @@
     # Força atualização (Aceita git pull) mesmo que hajam mudanças locais, ou seja, ainda que existirem commits a ser feito no servidor, ele aceita o pull sem dar erro
     force: yes
 
+- name: Criar .env do backend (Pois ele não está no repositório git por segurança)
+  template:
+    # .env.j2 é o arquivo modelo que está na pasta templates dessa role, o Ansible vai pegar esse arquivo, substituir as variáveis que estão entre {{ }} pelos valores reais e depois criar o arquivo .env no destino
+    src: .env.j2
+    # dest é o caminho onde o arquivo .env será criado no servidor
+    dest: /var/www/burrinho-backend/.env
+    # Como o backend no servidor roda com o usuário root, estamos definindo o dono do arquivo como root para evitar problemas de permissão
+    owner: root
+    group: root
+    # Definimos também as permissões do arquivo para 0600, ou seja, apenas o dono (root) pode ler e escrever o arquivo. Assim o arquivo fica protegido contra leitura por outros usuários do sistema.
+    mode: '0600'
+
 - name: Parar containers
 # Command representa o comando que vamos dar para fazer alguma coisa, no caso aqui é o docker compose down
   command: docker compose down

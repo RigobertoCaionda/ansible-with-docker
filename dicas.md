@@ -9,3 +9,8 @@
 # O ansible galaxy é usado para separar o nosso playbook em roles, ou seja, em pequenos conjuntos de tarefas, para usar o ansible-galaxy, criamos uma pasta roles na raiz do projeto, entramos na pasta e dentro dela usamos o comando:  ansible-galaxy init deploy_backend onde deploy_backend é o nome da role que será criado dentro dessa pasta. Ao rodar esse comando, vai criar uma pasta chamada deploy_backend dentro da pasta roles e dentro da pasta roles terá um monte de arquivos e pastas.
 
 # Para rodar um playbook criado com ansible-galaxy, entramos na pasta roles com cd, entramos na pasta da roles que criamos e executamos: ansible-playbook -i ../hosts main.yaml
+
+
+# O ansible-vault protege os dados sensíveis, ou seja, você cria uma pasta group_vars na raiz do projeto e dentro dela cria um arquivo all.yml e coloca lá os teus dados sensíveis. Depois disso, na raiz do projeto você dá um: ansible-vault encrypt group_vars/all.yml e ele vai criptografar todos os teus dados sensíveis e ninguém vai conseguir ver (Vai pedir que coloques uma senha). A partir daí, você vai precisar criar um arquivo chamado de .vault_pass em roles, esse arquivo deve estar no gitignore porque ele não deve ir ao git, dentro desse arquivo vais colocar a senha que você digitou no passo anterior. Depois Daí é só usar as variáveis dentro das tasks. A partir disso, para rodar a task agora é com o comando ansible-playbook -i ../hosts main.yaml --vault-pass-file .vault_pass
+
+# Se quisermos editar as senhas criptografadas, entramos na pasta group_vars e fazemos: ansible-vault edit all.yml
