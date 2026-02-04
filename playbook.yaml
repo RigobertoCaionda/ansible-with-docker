@@ -10,27 +10,11 @@
   remote_user: root
 
   # O comando become yes é usado quando o teu remote_user não é o root, imagine que o teu remote_user é rigoberto, esse comando diz executa todos os comandos como se fosses root (Executando comandos com sudo). No meu caso, como o user já é root, então não precisa
-  #become: yes
+  become: yes
 
-  # tasks é o conjunto de comandos que ele vai rodar
-  # tasks:
-  #   # Estou instalando o cowsay simplesmente para testar se funciona, não é necessário a instalação dele
-  #   - name: Install cowsay (leve e seguro)
-  #     apt:
-  #       # Aqui name se refere ao pacote que ele vai instalar
-  #       name: cowsay
-  #       # state indica se vai instalar ou desinstalar
-  #       state: absent
-  #       update_cache: yes   # garante que o apt atualize os pacotes antes de instalar
-
-  #   - name: Installing Nginx
-  #     apt:
-  #       name: nginx
-  #       state: present
-  #       update_cache: yes
-
-  #   - name: Init Nginx
-  #     service:
-  #       name: nginx
-  #       state: started
-        
+  # Aqui você define as roles que esse playbook vai executar, as roles são como se fossem módulos que contém várias tarefas (tasks) para serem executadas.
+  roles:
+    #- install_nginx
+    #- install_docker
+    - deploy_stack
+    - deploy-frotend

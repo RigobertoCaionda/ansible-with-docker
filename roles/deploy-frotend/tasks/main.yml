@@ -15,11 +15,13 @@
 
     
 # Para instalar o nodejs no linux primeiro precisa disso
+# Esse passo só vai ser necessário uma vez, depois de instalado o node, não precisa mais rodar esse passo. Mas fica aqui a título de exemplo.
 - name: Add NodeSource repository
   shell: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 
 # Esse passo só é necessário se não tivermos o node instalado globalmente
 # Depois do passo acima pode instalar. Estamos instalando o node aqui pq sem isso dá erro, já que o node estava instalado apenas no nvm, mas agora estamos instalando globalmente para podermos usar os comandos npm abaixo
+# Portanto, esse passo pode ser removido se o node já estiver instalado globalmente no servidor. Nesse caso, não é necessário rodar esse passo toda vez que essas tasks forem rodadas, mas fica aqui a título de exemplo.
 - name: Install Node.js
   apt:
     name: nodejs
